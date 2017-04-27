@@ -18,6 +18,8 @@ all_words = nltk.FreqDist(all_words)
 
 word_features = list(all_words.keys())[:3000]
 
+# print(word_features)
+
 def find_features(document):
     words = set(document)
     features = {}
@@ -26,11 +28,13 @@ def find_features(document):
 
     return features
 
-print((find_features(movie_reviews.words('neg/cv000_29416.txt'))))
+# print((find_features(movie_reviews.words('neg/cv000_29416.txt'))))
 
 featuresets = [(find_features(rev), category) for (rev, category) in documents]
 
+training_set = featuresets[:1900]
+testing_set =  featuresets[1900:]
 
-# print(all_words["enticing"])
-
-# print(len(all_words))
+classifier = nltk.NaiveBayesClassifier.train(training_set)
+print("Naive Bayes accuracy percent:", (nltk.classify.accuracy(classifier, testing_set))*100)
+classifier.show_most_informative_features(15)
