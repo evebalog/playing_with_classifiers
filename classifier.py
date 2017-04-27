@@ -1,7 +1,12 @@
 import nltk
 import random
 from nltk.corpus import movie_reviews
+from nltk.classify.scikitlearn import SklearnClassifier
 import pickle
+
+from sklearn.naive_bayes import MultinomialNB, BernoulliNB
+
+
 
 documents = [(list(movie_reviews.words(fileid)), category)
             for category in movie_reviews.categories()
@@ -42,8 +47,16 @@ classifier_f = open("naivebayes.pickle", "rb")
 classifier = pickle.load(classifier_f)
 classifier_f.close()
 
-print("Naive Bayes accuracy percent:", (nltk.classify.accuracy(classifier, testing_set))*100)
-#classifier.show_most_informative_features(15)
+print("Original Naive Bayes accuracy percent:", (nltk.classify.accuracy(classifier, testing_set))*100)
+# classifier.show_most_informative_features(15)
+
+MNB_classifier = SklearnClassifier(MultinomialNB())
+MNB_classifier.train(training_set)
+print("MNB_classifier accuracy percent:", (nltk.classify.accuracy(MNB_classifier, testing_set))*100)
+
+BernoulliNB_classifier = SklearnClassifier(BernoulliNB())
+BernoulliNB_classifier.train(training_set)
+print("BernoulliNB_classifier accuracy percent:", (nltk.classify.accuracy(BernoulliNB_classifier, testing_set))*100)
 
 # save_classifier = open("naivebayes.pickle", "wb")
 # pickle.dump(classifier, save_classifier)
