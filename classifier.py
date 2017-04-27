@@ -8,13 +8,17 @@ documents = [(list(movie_reviews.words(fileid)), category)
 
 random.shuffle(documents)
 
-print(documents[1])
+# print(documents[1])
 
 all_words = []
 for w in movie_reviews.words():
     all_words.append(w.lower())
 
 all_words = nltk.FreqDist(all_words)
-print(all_words.most_common(30))
 
-print(all_words["enticing"])
+word_features = list(all_words.keys())[:3000]
+print(word_features)
+#
+# print(all_words["enticing"])
+
+# print(len(all_words))
