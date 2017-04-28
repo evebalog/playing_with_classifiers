@@ -42,19 +42,27 @@ random.shuffle(documents)
 # print(documents[1])
 
 all_words = []
+
 for w in movie_reviews.words():
     all_words.append(w.lower())
 
 all_words = nltk.FreqDist(all_words)
 
-word_features = list(all_words.keys())[:3000]
+common_words = all_words.most_common(20)
+common_words_dictionary = dict(common_words)
+stop_words = list(common_words_dictionary.keys())
 
-# print(word_features)
+word_features = list(all_words.keys())[:3000]
+refined_word_features = [x for x in word_features if x not in stop_words]
+
+
+
+print(refined_word_features)
 
 def find_features(document):
     words = set(document)
     features = {}
-    for w in word_features:
+    for w in refined_word_features:
         features[w] = (w in words)
 
     return features
